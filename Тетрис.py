@@ -53,11 +53,11 @@ class Tetromino:
         return self.shape[self.rotation_state]  # Возвращаем текущую форму фигуры
 
     def rotate_matrix(self, matrix):
-        return [list(row) for row in zip(*matrix[::-1])]  # Вращаем матрицу (на 90 градусов по часовой стрелке)
+        return [list(row) for row in zip(*matrix[::-1])]  # Вращаем матрицу
     
 class TetrisGame:
     def __init__(self, screen):
-        self.screen = screen  # Создание экрана, на котором будет отрисовываться игра
+        self.screen = screen
         self.grid = [[BLACK for q in range(COLUMNS)] for q in range(ROWS)]
         self.current_piece = self.generate_new_piece()  # Генерация текущей фигуры
         self.next_piece = self.generate_new_piece()      # Генерация следующей фигуры
@@ -67,7 +67,7 @@ class TetrisGame:
         self.move_dy = 0  # Перемещение по Y
 
     def generate_new_piece(self):
-        return Tetromino(COLUMNS // 2 - 2, 0, random.choice(SHAPE_TEMPLATES))  # Фигурка начинается в середине #экрана
+        return Tetromino(COLUMNS // 2 - 2, 0, random.choice(SHAPE_TEMPLATES))  # Фигурка начинается в середине экрана
     
     def check_collision(self, offset_x=0, offset_y=0):
         for y, row in enumerate(self.current_piece.get_image()):  # Проходим по строкам фигуры
@@ -77,7 +77,7 @@ class TetrisGame:
                     if (x + self.current_piece.x + offset_x < 0 or 
                         x + self.current_piece.x + offset_x >= COLUMNS or 
                         y + self.current_piece.y + offset_y >= ROWS or 
-                        self.grid[y + self.current_piece.y + offset_y][x + self.current_piece.x + offset_x] != BLACK): #Проверяет, не занята ли ячейка, в которую может попасть фигура, цветом, отличным от чёрного (то есть  #другой фигурой)
+                        self.grid[y + self.current_piece.y + offset_y][x + self.current_piece.x + offset_x] != BLACK): #Проверяет, не занята ли ячейка, в которую может попасть фигура, цветом, отличным от чёрного
                         return True  # Если есть столкновение
         return False  # Если нет столкновений
     
@@ -93,7 +93,7 @@ class TetrisGame:
         self.current_piece = self.next_piece  # Передаём состояние текущей фигуры следующей
         self.next_piece = self.generate_new_piece()  # Генерируем новую фигуру
         if self.check_collision():  # Проверяем на столкновения
-            self.is_game_over = True  # Если есть столкновение, игра окончена (is_game_over=True)
+            self.is_game_over = True  # Если есть столкновение, игра окончена
 
     def clear_filled_lines(self):
         # Находим заполненные линии
@@ -115,7 +115,7 @@ class TetrisGame:
     
     def rotate_piece(self):
         self.current_piece.rotate()  # Вращаем фигуру
-        if self.check_collision():  # Проверка на столкновение после вращения, по умолчанию проверка через if #возвращает true. То есть, такую проверку можно записать так: if self.check_collision() == true:
+        if self.check_collision():  # Проверка на столкновение после вращения
         # В случае столкновения, возвращаем фигуру в исходное состояние, то есть делаем 3 вращения
             self.current_piece.rotate()
             self.current_piece.rotate()
@@ -206,8 +206,7 @@ def main():
             if event.type == pygame.QUIT:  # Если нажата кнопка закрытия
                 running = False  # Завершаем цикл
             if event.type == pygame.KEYDOWN:  # Если нажата клавиша
-                if event.key in {pygame.K_LEFT, pygame.K_RIGHT, pygame.K_DOWN, pygame.K_UP}:  # Если это 
-                #клавиши управления
+                if event.key in {pygame.K_LEFT, pygame.K_RIGHT, pygame.K_DOWN, pygame.K_UP}:  # Если это клавиши управления
                     keys_pressed.add(event.key)  # Добавляем клавишу в множество нажатых клавиш
             if event.type == pygame.KEYUP:  # Если клавиша отпущена
                 if event.key in {pygame.K_LEFT, pygame.K_RIGHT, pygame.K_DOWN, pygame.K_UP}:  # Если это 
